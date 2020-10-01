@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFTests"
         xmlns:vm="clr-namespace:WPFTests.ViewModels"
+        xmlns:commands="clr-namespace:WPFTests.Infrasrtructure.Commands"
         mc:Ignorable="d"
         Title="{Binding Path=Title}"
         Topmost="{Binding  IsChecked, ElementName=IsWindowTopMost}"
@@ -18,18 +19,18 @@
         <Slider VerticalAlignment="Top" HorizontalAlignment="Left" Width="140" Margin="435,26,0,0"
                 Minimum="0"
                 Maximum="600"
-                Value="{Binding ElementName=Translator, Path=X}"/>        
+                Value="{Binding ElementName=Translator, Path=X}"/>
         <Slider VerticalAlignment="Top" HorizontalAlignment="Left" Width="140" Margin="239,26,0,0"
                 Minimum="-180" Maximum="180"
                 Value="{Binding Path=Angle, ElementName=Rotator}"/>
-        
+
         <Ellipse Name="MyEllipse" Fill="DarkBlue" Stroke="Red" StrokeThickness="4"
                  VerticalAlignment="Top" HorizontalAlignment="Left" Width="80" Height="40" Margin="92,83,0,0"
                  RenderTransformOrigin="0.5,0.5">
             <Ellipse.RenderTransform>
                 <TransformGroup>
                     <RotateTransform Angle="0" x:Name="Rotator"/>
-                    <TranslateTransform X="0" x:Name="Translator"/>                    
+                    <TranslateTransform X="0" x:Name="Translator"/>
                 </TransformGroup>
             </Ellipse.RenderTransform>
         </Ellipse>
@@ -41,6 +42,13 @@
                   Margin="220,0"
                   Name="IsWindowTopMost"/>
         <Button Content="Close Window"  VerticalAlignment="Top" HorizontalAlignment="Left"
-                Margin="20,60"/>
+                Margin="20,60">
+             <Button.Command>
+                <commands:CloseWindowCommand/>
+            </Button.Command>
+        </Button>
+        <Button Content="Hello World!"  VerticalAlignment="Top" HorizontalAlignment="Left"
+                Margin="120,60" Command="{Binding ShowDialogCommand}">            
+        </Button>
     </Grid>
 </Window>
