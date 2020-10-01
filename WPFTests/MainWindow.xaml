@@ -4,11 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFTests"
+        xmlns:vm="clr-namespace:WPFTests.ViewModels"
         mc:Ignorable="d"
-        Title="{Binding Path=X,ElementName=Translator}" Height="638" Width="848">
+        Title="{Binding Path=Title}"
+        Height="638" Width="848">
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
     <Grid>
         <TextBox VerticalAlignment="Top" HorizontalAlignment="Left" Width="140" Margin="62,26,0,0"
-                 Text="{Binding Path=Angle,ElementName=Rotator}"/>
+                 Text="{Binding Path=Title, UpdateSourceTrigger=PropertyChanged}"/>
         <Slider VerticalAlignment="Top" HorizontalAlignment="Left" Width="140" Margin="435,26,0,0"
                 Minimum="0"
                 Maximum="600"
