@@ -5,14 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFTests"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="{Binding Path=X,ElementName=Translator}" Height="638" Width="848">
     <Grid>
-        <Button Content="Отправить" HorizontalAlignment="Left" Margin="250,152,0,0" VerticalAlignment="Top" Height="34" Width="106" Click="Button_Click">
-        </Button>
-        <TextBox x:Name="LoginEdit" HorizontalAlignment="Left" Margin="132,97,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="166" Height="23"/>
-        <PasswordBox x:Name="PasswordEdit" HorizontalAlignment="Center" Margin="0,97,0,0" VerticalAlignment="Top" Width="180" Height="23"/>
-        <TextBlock HorizontalAlignment="Left" Margin="132,73,0,0" Text="Имя пользователя" TextWrapping="Wrap" VerticalAlignment="Top" Height="18"/>
-        <Label Content="Пароль" HorizontalAlignment="Left" Margin="310,68,0,0" VerticalAlignment="Top" Width="91" Height="24"/>
-
+        <TextBox VerticalAlignment="Top" HorizontalAlignment="Left" Width="140" Margin="62,26,0,0"
+                 Text="{Binding Path=Angle,ElementName=Rotator}"/>
+        <Slider VerticalAlignment="Top" HorizontalAlignment="Left" Width="140" Margin="435,26,0,0"
+                Minimum="0"
+                Maximum="600"
+                Value="{Binding ElementName=Translator, Path=X}"/>        
+        <Slider VerticalAlignment="Top" HorizontalAlignment="Left" Width="140" Margin="239,26,0,0"
+                Minimum="-180" Maximum="180"
+                Value="{Binding Path=Angle, ElementName=Rotator}"/>
+        
+        <Ellipse Name="MyEllipse" Fill="DarkBlue" Stroke="Red" StrokeThickness="4"
+                 VerticalAlignment="Top" HorizontalAlignment="Left" Width="80" Height="40" Margin="92,83,0,0"
+                 RenderTransformOrigin="0.5,0.5">
+            <Ellipse.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="0" x:Name="Rotator"/>
+                    <TranslateTransform X="0" x:Name="Translator"/>                    
+                </TransformGroup>
+            </Ellipse.RenderTransform>
+        </Ellipse>
     </Grid>
 </Window>
