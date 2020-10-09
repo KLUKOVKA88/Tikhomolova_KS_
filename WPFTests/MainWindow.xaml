@@ -4,15 +4,51 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFTests"
+        xmlns:vm="clr-namespace:WPFTests.ViewModels"
+        xmlns:commands="clr-namespace:WPFTests.Infrasrtructure.Commands"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="{Binding Path=Title}"
+        Topmost="{Binding  IsChecked, ElementName=IsWindowTopMost}"
+        Height="638" Width="848">
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
     <Grid>
-        <Button Content="Отправить" HorizontalAlignment="Left" Margin="250,152,0,0" VerticalAlignment="Top" Height="34" Width="106" Click="Button_Click">
-        </Button>
-        <TextBox x:Name="LoginEdit" HorizontalAlignment="Left" Margin="132,97,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="166" Height="23"/>
-        <PasswordBox x:Name="PasswordEdit" HorizontalAlignment="Center" Margin="0,97,0,0" VerticalAlignment="Top" Width="180" Height="23"/>
-        <TextBlock HorizontalAlignment="Left" Margin="132,73,0,0" Text="Имя пользователя" TextWrapping="Wrap" VerticalAlignment="Top" Height="18"/>
-        <Label Content="Пароль" HorizontalAlignment="Left" Margin="310,68,0,0" VerticalAlignment="Top" Width="91" Height="24"/>
+        <TextBox VerticalAlignment="Top" HorizontalAlignment="Left" Width="140" Margin="62,26,0,0"
+                 Text="{Binding Path=Title, UpdateSourceTrigger=PropertyChanged}"/>
+        <Slider VerticalAlignment="Top" HorizontalAlignment="Left" Width="140" Margin="435,26,0,0"
+                Minimum="0"
+                Maximum="600"
+                Value="{Binding ElementName=Translator, Path=X}"/>
+        <Slider VerticalAlignment="Top" HorizontalAlignment="Left" Width="140" Margin="239,26,0,0"
+                Minimum="-180" Maximum="180"
+                Value="{Binding Path=Angle, ElementName=Rotator}"/>
 
+        <Ellipse Name="MyEllipse" Fill="DarkBlue" Stroke="Red" StrokeThickness="4"
+                 VerticalAlignment="Top" HorizontalAlignment="Left" Width="80" Height="40" Margin="92,83,0,0"
+                 RenderTransformOrigin="0.5,0.5">
+            <Ellipse.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="0" x:Name="Rotator"/>
+                    <TranslateTransform X="0" x:Name="Translator"/>
+                </TransformGroup>
+            </Ellipse.RenderTransform>
+        </Ellipse>
+        <TextBlock Text="{Binding CurrentTime, ConverterCulture=ru-RU, StringFormat=HH:mm:ss.ffff}"/>
+        <CheckBox Content="Включить таймер" VerticalAlignment="Top" HorizontalAlignment="Left"
+                  Margin="80,0"
+                  IsChecked="{Binding TimerEnabled}"/>
+        <CheckBox Content="Top most" VerticalAlignment="Top" HorizontalAlignment="Left"
+                  Margin="220,0"
+                  Name="IsWindowTopMost"/>
+        <Button Content="Close Window"  VerticalAlignment="Top" HorizontalAlignment="Left"
+                Margin="20,60">
+             <Button.Command>
+                <commands:CloseWindowCommand/>
+            </Button.Command>
+        </Button>
+        <Button Content="Hello World!"  VerticalAlignment="Top" HorizontalAlignment="Left"
+                Margin="120,60" Command="{Binding ShowDialogCommand}">            
+        </Button>
     </Grid>
 </Window>

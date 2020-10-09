@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MailSender.lib.Interfaces;
+using MailSender.lib.Service;
+using System;
 using System.Net;
 using System.Net.Mail;
 
@@ -8,31 +10,15 @@ namespace ConsoleTests
     {
         static void Main(string[] args)
         {
+            IEncryptorService cryptor = new Rfc2898Encryptor();
 
-            var to = new MailAddress("k3incho@inbox.ru", "Костя");           //кому отправляем
-            var from = new MailAddress("8_klukovka_8@inbox.ru", "Костя");    //от кого отправляем
+            var str = "Hello World!";
+            const string password = "MailSender!";
 
-            var message = new MailMessage(from, to);    //создаем почтовое отправление
-            //var msg = new MailAddress("user@server.ru", "qwe@ASD.ru");
+            var crypted_str = cryptor.Encrypt(str, password);
 
-            message.Subject = "Заголовок письма от " + DateTime.Now;
-            message.Body = "Тело текстового письма + " + DateTime.Now;
-
-            //создаем клиента SMTP почты, через который будет отправляться почта
-            var client = new SmtpClient("smtp.mail.ru"/*, "smtp.yandex.ru", 587 */);
-            client.EnableSsl = true;
-
-            //указываем учетные данные почты клиента
-            client.Credentials = new NetworkCredential
-            {
-                UserName = "user_name",
-                Password = "PassWord!"
-            };
-
-            //отправляем сообщение
-            client.Send(message);
-
-            //Console.WriteLine("Hello World!");
+            var decrypted_str = cryptor.Decrypt(crypted_str, password);
+           
         }
     }
 }
