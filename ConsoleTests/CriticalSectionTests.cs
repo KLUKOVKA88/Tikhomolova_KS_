@@ -37,17 +37,17 @@ namespace ConsoleTests
 
             Console.ReadLine();
 
-            starter.Set();
+            //var mutex1 = new Mutex(true, "Тестовый мютекс", out var created1);
 
-            Console.ReadLine();
+            //var mutex2 = new Mutex(true, "Тестовый мютекс", out var created2);
 
-            starter.Set();
+            //mutex1.WaitOne();
+            //mutex1.WaitOne();
+            //mutex1.ReleaseMutex();
 
-            Console.ReadLine();
-
-            starter.Set();
-
-            Console.ReadLine();
+            //var semaphore = new Semaphore(0, 10);
+            //semaphore.WaitOne();
+            //semaphore.Release();
 
         }
 
