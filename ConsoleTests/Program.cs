@@ -6,11 +6,10 @@ namespace ConsoleTests
     {
         static void Main(string[] args)
         {
-            //ThreadTests.Start();
-            ThreadPoolTests.Start();
+            TPLOverview.Start();
 
-            Console.WriteLine("Главный поток работу закончил");
+            Console.WriteLine("Главный поток работу закончил!");
             Console.ReadLine();
         }
-    }
+    }           
 }
