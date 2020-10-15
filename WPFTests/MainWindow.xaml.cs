@@ -6,6 +6,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace WPFTests
 {
@@ -16,7 +17,9 @@ namespace WPFTests
         private async void OnOpenFileClick(object sender, RoutedEventArgs e)
         {
             // Мы находились в ThreadID == 1
+
             await Task.Yield(); //Даем время на обработку сообщений пользовательского интерфейса
+
             // Мы снова в ThreadID == 1
 
             var dialog = new OpenFileDialog
@@ -28,35 +31,7 @@ namespace WPFTests
 
             if (dialog.ShowDialog() != true) return;
 
-            //var dict = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
-
-
-            //using (var reader = new StreamReader(dialog.FileName))
-            //{
-            //    while (!reader.EndOfStream) 
-            //    {
-            //        var line = await reader.ReadLineAsync().ConfigureAwait(false);
-            //        var words = line.Split(' ');
-            //        //Thread.Sleep(100);
-            //        //await Task.Delay(1);
-
-            //        foreach (var word in words)
-            //            if (dict.ContainsKey(word))
-            //                dict[word]++;
-            //            else
-            //                dict.Add(word, 1);
-
-            //        //ProgressInfo.Value = reader.BaseStream.Position / (double)reader.BaseStream.Length;
-            //        ProgressInfo.Dispatcher.Invoke(() =>
-            //        ProgressInfo.Value = reader.BaseStream.Position / (double)reader.BaseStream.Length);
-            //    }
-            //}
-
-
-            //var count = dict.Count;
-            //Result.Text = $"Число слов {count}");
-            //Result.Dispatcher.Invoke(() => Result.Text = $"Число слов {count}");
-
+          
             StartAction.IsEnabled = false;
             CancelAction.IsEnabled = true;
 
@@ -86,9 +61,11 @@ namespace WPFTests
 
         private static async Task<int> GetWordsCountAsync(string FileName, IProgress<double> Progress = null, CancellationToken Cancel = default)
         {
-            //Мы находимся в ThreadID == 7 (например)
-            await Task.Yield();
-            // Тепрь мы в ThreadID == 12 (например, а возможно и обратно в 7)
+            var thread_id = Thread.CurrentThread.ManagedThreadId;
+
+            await Task.Yield().ConfigureAwait(false);
+
+            var thread_id2 = Thread.CurrentThread.ManagedThreadId;
 
             var dict = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
@@ -102,7 +79,7 @@ namespace WPFTests
                     //ConfigureAwait(false); - требование вернуться в произвольный поток из пула потоков
                     var words = line.Split(' ');
                     //Thread.Sleep(100);
-                    await Task.Delay(1);
+                    //await Task.Delay(1, Cancel).ConfigureAwait(false);
 
                     foreach (var word in words)
                         if (dict.ContainsKey(word))
@@ -113,6 +90,12 @@ namespace WPFTests
                     Progress?.Report(reader.BaseStream.Position / (double)reader.BaseStream.Length);
                 }
             }
+
+            var thread_id3 = Thread.CurrentThread.ManagedThreadId;
+
+            await App.Current.Dispatcher;
+
+            var thread_id4 = Thread.CurrentThread.ManagedThreadId;
 
             return dict.Count;
 
