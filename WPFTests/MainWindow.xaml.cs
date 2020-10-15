@@ -68,7 +68,7 @@ namespace WPFTests
             try 
             {
                 
-                var count = await GetWordsCountAsync(dialog.FileName, progress, cancel);
+                var count = await GetWordsCountAsync(dialog.FileName, progress, cancel).ConfigureAwait(true);
                 Result.Text = $"Число слов {count}";
             }
             catch(OperationCanceledException)
